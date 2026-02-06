@@ -1,0 +1,136 @@
+:root {
+  color-scheme: dark;
+  --bg: #0b1020;
+  --panel: #121a31;
+  --panel-border: #2a365f;
+  --text: #d9e3ff;
+  --muted: #8ea1d1;
+  --accent: #4f7cff;
+  --accent-hover: #6a8dff;
+  --safe: #19c37d;
+  --suspicious: #f2a93b;
+  --blocked: #f45d66;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, Segoe UI, Roboto, sans-serif;
+  background: radial-gradient(circle at top left, #111f46, var(--bg) 60%);
+  color: var(--text);
+}
+
+.layout {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 28px;
+  display: grid;
+  gap: 20px;
+}
+
+.panel {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+  border: 1px solid var(--panel-border);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.hero p {
+  color: var(--muted);
+  max-width: 760px;
+}
+
+.field-group {
+  margin-bottom: 16px;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.input-action-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+}
+
+input,
+button {
+  border-radius: 10px;
+  border: 1px solid #33457c;
+  padding: 11px 13px;
+  font-size: 0.95rem;
+}
+
+input {
+  background: #0f1834;
+  color: var(--text);
+}
+
+button {
+  background: #1a2852;
+  color: var(--text);
+  cursor: pointer;
+}
+
+button:hover {
+  background: #243567;
+}
+
+button.primary {
+  width: 100%;
+  background: var(--accent);
+  border-color: transparent;
+  font-weight: 600;
+}
+
+button.primary:hover {
+  background: var(--accent-hover);
+}
+
+.result-card {
+  background: #0d1734;
+  border: 1px solid #30457a;
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.badge {
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.badge.safe { background: rgba(25, 195, 125, 0.2); color: var(--safe); }
+.badge.suspicious { background: rgba(242, 169, 59, 0.2); color: var(--suspicious); }
+.badge.blocked { background: rgba(244, 93, 102, 0.2); color: var(--blocked); }
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+ul {
+  margin: 0;
+  padding-left: 20px;
+  color: var(--muted);
+}
+
+.error {
+  color: var(--blocked);
+}

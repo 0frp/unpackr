@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unpackr</title>
+    <link rel="stylesheet" href="renderer.css" />
+  </head>
+  <body>
+    <main class="layout">
+      <section class="panel hero">
+        <h1>Unpackr</h1>
+        <p>Modern archive extraction with security-first controls and enterprise-ready policy logic.</p>
+      </section>
+
+      <section class="panel">
+        <h2>Secure Extraction</h2>
+        <div class="field-group">
+          <label for="archivePath">Archive</label>
+          <div class="input-action-row">
+            <input id="archivePath" placeholder="Choose a .zip/.rar/.7z archive" readonly />
+            <button id="pickArchive">Browse</button>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="outputPath">Destination</label>
+          <div class="input-action-row">
+            <input id="outputPath" placeholder="Choose extraction folder" readonly />
+            <button id="pickOutput">Browse</button>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="password">Archive Password (optional)</label>
+          <input id="password" type="password" placeholder="••••••••" />
+        </div>
+
+        <button id="runExtraction" class="primary">Run Secure Extraction</button>
+      </section>
+
+      <section class="panel">
+        <h2>Operation Result</h2>
+        <div id="result" class="result-placeholder">No operation yet.</div>
+      </section>
+
+      <section class="panel two-col">
+        <div>
+          <h3>Scanner Engines</h3>
+          <ul id="scanSummary"></ul>
+        </div>
+        <div>
+          <h3>Threat Indicators</h3>
+          <ul id="indicators"></ul>
+        </div>
+      </section>
+    </main>
+
+    <script src="renderer.js"></script>
+  </body>
+</html>

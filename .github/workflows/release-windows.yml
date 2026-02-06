@@ -1,0 +1,73 @@
+name: Build and Release Windows Installer
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version tag (e.g. v0.1.0)"
+        required: true
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build installer
+        run: npm run dist
+
+      - name: Verify exactly one installer exists
+        shell: pwsh
+        run: |
+          $files = Get-ChildItem -Path release -Filter "*Setup*.exe"
+          if ($files.Count -ne 1) {
+            Write-Error "Expected exactly one installer .exe, found $($files.Count)."
+            exit 1
+          }
+          "INSTALLER_FILE=$($files[0].Name)" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Resolve release tag
+        id: tag
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "value=${{ github.event.inputs.version }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Generate checksum
+        shell: pwsh
+        run: |
+          Get-FileHash "release\$env:INSTALLER_FILE" -Algorithm SHA256 |
+            ForEach-Object { "{0}  {1}" -f $_.Hash.ToLower(), $_.Path.Split('\\')[-1] } |
+            Set-Content release\SHA256SUMS.txt
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.value }}
+          name: Unpackr ${{ steps.tag.outputs.value }}
+          body_path: docs/RELEASE_TEMPLATE.md
+          draft: false
+          prerelease: false
+          files: |
+            release/*Setup*.exe
+            release/SHA256SUMS.txt
